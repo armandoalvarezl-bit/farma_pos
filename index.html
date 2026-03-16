@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -6,282 +6,298 @@
 <title>FarmaPOS Cloud</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">
 
 <style>
 :root{
---bg-deep:#071726;
---bg-mid:#0b2537;
---panel:#f3f6fa;
---ink:#0f172a;
+--bg:#156a5f;
+--bg-2:#0f5b52;
+--card:#f8fbff;
+--ink:#0b1220;
 --muted:#64748b;
 --line:#d7e0eb;
---brand:#0d8a6a;
---brand-2:#0a6f56;
---focus:rgba(13,138,106,.22);
+--brand:#0aa28a;
+--brand-2:#07816f;
+--focus:rgba(10,162,138,.24);
+--shadow:0 26px 70px rgba(2,6,23,.28);
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-html{
-background:var(--bg-deep);
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+html,body{height:100%;}
 
 body{
 min-height:100vh;
-display:grid;
-grid-template-columns:minmax(0,1fr) 450px;
-width:100%;
 margin:0;
+display:grid;
+place-items:center;
+padding:22px 18px;
 background:
-radial-gradient(1300px 560px at 8% -12%, #2dd4bf26 0%, transparent 58%),
-radial-gradient(900px 480px at 100% 14%, #22c55e1f 0%, transparent 54%),
-linear-gradient(145deg, var(--bg-deep) 0%, var(--bg-mid) 46%, #0c1f34 100%);
+radial-gradient(1000px 560px at 12% 18%, rgba(34,211,153,.22) 0%, transparent 54%),
+radial-gradient(860px 520px at 92% 10%, rgba(45,212,191,.22) 0%, transparent 56%),
+linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
 color:var(--ink);
 line-height:1.35;
 overflow-x:hidden;
+overflow-y:auto;
 }
 
-.intro-screen{
+.stage{
 position:fixed;
 inset:0;
-z-index:12000;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
-background:
-radial-gradient(circle at 30% 18%, #34d39933 0%, transparent 35%),
-radial-gradient(circle at 70% 75%, #2dd4bf2b 0%, transparent 32%),
-linear-gradient(140deg,#022c22 0%, #064e3b 48%, #0f766e 100%);
-transition:opacity .45s ease, visibility .45s ease;
-}
-
-.intro-screen.hide{
-opacity:0;
-visibility:hidden;
+z-index:0;
 pointer-events:none;
-}
-
-.intro-card{
-width:min(620px,100%);
-text-align:center;
-color:#ecfdf5;
-padding:34px 28px;
-border-radius:22px;
-border:1px solid #bbf7d044;
-background:linear-gradient(165deg,#ffffff1a 0%, #ffffff0d 100%);
-box-shadow:0 24px 60px rgba(2,6,23,.38);
-backdrop-filter:blur(4px);
-}
-
-.intro-logo{
-font-size:42px;
-font-weight:700;
-letter-spacing:.2px;
-margin-bottom:8px;
-}
-
-.intro-logo span{
-color:#86efac;
-}
-
-.intro-sub{
-font-size:15px;
-line-height:1.45;
-opacity:.95;
-max-width:480px;
-margin:0 auto 22px;
-}
-
-.intro-enter{
-width:auto;
-min-width:210px;
-padding:12px 22px;
-border:1px solid #86efac66;
-border-radius:11px;
-background:linear-gradient(135deg,#047857,#059669);
-color:#ecfdf5;
-font-weight:700;
-font-size:13px;
-letter-spacing:.3px;
-cursor:pointer;
-box-shadow:0 10px 22px rgba(2,6,23,.30);
-transition:transform .15s ease, filter .2s ease;
-display:inline-flex;
-justify-content:center;
-align-items:center;
-margin:0 auto;
-}
-
-.intro-enter:hover{
-transform:translateY(-1px);
-filter:brightness(1.04);
-}
-
-.left{
-position:relative;
-display:flex;
-align-items:center;
-padding:56px 66px;
 overflow:hidden;
 }
 
-.left::before{
+.stage::before{
 content:'';
 position:absolute;
-inset:0;
+inset:-20%;
 background:
-linear-gradient(112deg, #ffffff17 0%, transparent 46%),
-radial-gradient(circle at 16% 24%, #ffffff2b 0%, transparent 31%),
-radial-gradient(circle at 80% 78%, #99f6e42e 0%, transparent 34%);
-pointer-events:none;
+radial-gradient(circle at 22% 18%, rgba(255,255,255,.12) 0%, transparent 38%),
+radial-gradient(circle at 84% 14%, rgba(255,255,255,.10) 0%, transparent 34%),
+radial-gradient(circle at 82% 86%, rgba(255,255,255,.10) 0%, transparent 36%),
+linear-gradient(180deg, rgba(2,6,23,.10) 0%, rgba(2,6,23,0) 55%, rgba(2,6,23,.18) 100%);
 }
 
-.hero-copy{
+.decor{position:absolute;filter:drop-shadow(0 22px 24px rgba(2,6,23,.35));opacity:.98;transform-origin:center;}
+
+.decor-tablet{
+right:54px;
+top:40px;
+width:320px;
+height:240px;
+transform:rotate(11deg);
+border-radius:30px;
+background:linear-gradient(135deg,#111827,#0b1220);
+box-shadow:inset 0 0 0 2px rgba(255,255,255,.08);
+}
+
+.decor-tablet::before{
+content:'';
+position:absolute;
+inset:18px;
+border-radius:20px;
+background:
+linear-gradient(90deg, rgba(10,162,138,.88) 0 0) 18px 18px/160px 16px no-repeat,
+linear-gradient(90deg, rgba(148,163,184,.55) 0 0) 18px 44px/252px 10px no-repeat,
+linear-gradient(90deg, rgba(148,163,184,.50) 0 0) 18px 62px/220px 10px no-repeat,
+linear-gradient(90deg, rgba(148,163,184,.45) 0 0) 18px 80px/190px 10px no-repeat,
+linear-gradient(135deg,#f1f5f9,#e2e8f0);
+}
+
+.decor-tablet::after{
+content:'';
+position:absolute;
+left:36px;
+right:36px;
+bottom:32px;
+height:76px;
+border-radius:18px;
+background:
+linear-gradient(#ffffff,#ffffff) 0 0/100% 100% no-repeat,
+linear-gradient(90deg, rgba(14,165,233,.55) 0 0) 18px 18px/64px 10px no-repeat,
+linear-gradient(90deg, rgba(34,197,94,.55) 0 0) 98px 18px/64px 10px no-repeat,
+linear-gradient(90deg, rgba(249,115,22,.55) 0 0) 178px 18px/64px 10px no-repeat;
+box-shadow:inset 0 0 0 1px rgba(203,213,225,.85);
+opacity:.96;
+}
+
+.decor-monitor{
+right:84px;
+bottom:34px;
+width:400px;
+height:260px;
+transform:rotate(-4deg);
+border-radius:26px;
+background:linear-gradient(135deg,#0b1220,#111827);
+box-shadow:inset 0 0 0 2px rgba(255,255,255,.08);
+}
+
+.decor-monitor::before{
+content:'';
+position:absolute;
+inset:18px 18px 44px 18px;
+border-radius:18px;
+background:
+linear-gradient(90deg, rgba(10,162,138,.88) 0 0) 18px 18px/180px 16px no-repeat,
+linear-gradient(90deg, rgba(148,163,184,.55) 0 0) 18px 44px/290px 10px no-repeat,
+linear-gradient(90deg, rgba(148,163,184,.52) 0 0) 18px 62px/268px 10px no-repeat,
+linear-gradient(90deg, rgba(148,163,184,.48) 0 0) 18px 80px/210px 10px no-repeat,
+linear-gradient(90deg, rgba(34,197,94,.68) 0 0) 18px 116px/80px 34px no-repeat,
+linear-gradient(90deg, rgba(14,165,233,.62) 0 0) 106px 116px/80px 34px no-repeat,
+linear-gradient(90deg, rgba(249,115,22,.62) 0 0) 194px 116px/80px 34px no-repeat,
+linear-gradient(135deg,#f1f5f9,#e2e8f0);
+}
+
+.decor-monitor::after{
+content:'';
+position:absolute;
+left:50%;
+bottom:-18px;
+width:190px;
+height:44px;
+transform:translateX(-50%);
+border-radius:16px;
+background:linear-gradient(135deg,#334155,#475569);
+box-shadow:0 14px 18px rgba(2,6,23,.18);
+}
+
+.decor-phone{
+left:92px;
+bottom:24px;
+width:230px;
+height:300px;
+transform:rotate(-10deg);
+border-radius:32px;
+background:linear-gradient(135deg,#0f172a,#111827);
+box-shadow:inset 0 0 0 2px rgba(255,255,255,.08);
+}
+
+.decor-phone::before{
+content:'';
+position:absolute;
+inset:22px 18px 30px 18px;
+border-radius:22px;
+background:
+linear-gradient(90deg, rgba(10,162,138,.85) 0 0) 14px 16px/136px 14px no-repeat,
+linear-gradient(90deg, rgba(34,197,94,.75) 0 0) 14px 38px/136px 14px no-repeat,
+linear-gradient(90deg, rgba(249,115,22,.75) 0 0) 14px 60px/136px 14px no-repeat,
+linear-gradient(90deg, rgba(239,68,68,.72) 0 0) 14px 82px/136px 14px no-repeat,
+linear-gradient(90deg, rgba(14,165,233,.70) 0 0) 14px 104px/136px 14px no-repeat,
+linear-gradient(135deg,#f1f5f9,#e2e8f0);
+}
+
+.decor-phone::after{
+content:'';
+position:absolute;
+left:50%;
+top:14px;
+width:88px;
+height:7px;
+transform:translateX(-50%);
+border-radius:999px;
+background:rgba(148,163,184,.55);
+}
+
+.decor-printer{
+left:44px;
+top:300px;
+width:240px;
+height:180px;
+transform:rotate(-3deg);
+border-radius:18px;
+background:linear-gradient(135deg,#f8fafc,#cbd5e1);
+box-shadow:inset 0 0 0 2px rgba(100,116,139,.24);
+}
+
+.decor-printer::before{
+content:'';
+position:absolute;
+left:18px;
+right:18px;
+top:18px;
+height:58px;
+border-radius:14px;
+background:rgba(14,165,233,.18);
+}
+
+.decor-printer::after{
+content:'';
+position:absolute;
+left:48px;
+right:48px;
+bottom:18px;
+height:80px;
+border-radius:12px;
+background:
+linear-gradient(90deg, rgba(148,163,184,.85) 0 0) 16px 18px/128px 6px no-repeat,
+linear-gradient(90deg, rgba(148,163,184,.85) 0 0) 16px 34px/98px 6px no-repeat,
+linear-gradient(90deg, rgba(148,163,184,.85) 0 0) 16px 50px/114px 6px no-repeat,
+linear-gradient(#ffffff,#ffffff);
+box-shadow:inset 0 0 0 2px rgba(203,213,225,.75);
+}
+
+.layout{
 position:relative;
 z-index:2;
-max-width:640px;
-padding:30px 30px 28px;
-border-radius:22px;
-background:linear-gradient(160deg, #ffffff1f 0%, #ffffff0c 100%);
-border:1px solid #ffffff30;
-box-shadow:0 16px 38px rgba(2,6,23,.22);
+width:min(560px, 100%);
 }
 
-.hero-tag{
-display:inline-flex;
-align-items:center;
-gap:8px;
-padding:7px 12px;
+.login-features{
+margin:8px 0 10px;
+display:grid;
+gap:7px;
+padding:10px 10px;
+border-radius:12px;
+border:1px solid rgba(10,162,138,.18);
+background:rgba(10,162,138,.06);
+}
+
+.login-features-title{
 font-size:11px;
-font-weight:700;
-letter-spacing:.45px;
+font-weight:900;
+letter-spacing:.12em;
 text-transform:uppercase;
-border-radius:999px;
-color:#dcfce7;
-border:1px solid #86efac88;
-background:#064e3b77;
-margin-bottom:16px;
-}
-
-.left h1{
-font-size:48px;
-line-height:1;
-margin-bottom:14px;
-max-width:580px;
-letter-spacing:-.7px;
-color:#f0fdf4;
-}
-
-.left p{
-font-size:19px;
-opacity:.96;
-max-width:560px;
-line-height:1.35;
-color:#e6fff5;
-}
-
-.floating{
-position:absolute;
-border-radius:999px;
-background:#ffffff1e;
-animation:float 12s infinite ease-in-out;
-z-index:1;
-}
-
-.f1{top:8%;left:8%;width:160px;height:160px;}
-.f2{bottom:8%;right:16%;width:146px;height:146px;}
-.f3{top:40%;right:7%;width:124px;height:124px;}
-
-@keyframes float{
-0%,100%{transform:translateY(0);}
-50%{transform:translateY(-20px);}
-}
-
-.right{
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:34px 26px;
-background:linear-gradient(180deg,#eff4f9 0%, #e7edf5 100%);
-border-left:1px solid #cfd8e5;
-}
-
-.login-box{
-width:100%;
-max-width:372px;
-background:#ffffff;
-border:1px solid var(--line);
-border-radius:20px;
-padding:24px 20px;
-box-shadow:0 20px 44px rgba(9,20,35,.12);
-transition:transform .35s ease, opacity .35s ease, filter .35s ease;
-}
-
-body.prelogin .login-box{
-opacity:0;
-transform:translateY(10px) scale(.98);
-filter:blur(2px);
-pointer-events:none;
-}
-
-body.form-ready .login-box{
-opacity:1;
-transform:translateY(0) scale(1);
-filter:none;
-pointer-events:auto;
-}
-
-.logo{
-font-size:34px;
-font-weight:700;
-line-height:1;
 color:var(--brand-2);
-letter-spacing:.2px;
 }
 
-.logo span{
-color:#22c55e;
+.feature{
+display:flex;
+gap:10px;
+align-items:flex-start;
+color:#0f172a;
+font-size:12.5px;
+line-height:1.35;
 }
 
-.subtitle{
-font-size:13px;
-color:var(--muted);
-margin-top:3px;
-margin-bottom:16px;
-padding-bottom:12px;
-border-bottom:1px solid #e5ebf2;
+.feature .dot{
+flex:0 0 auto;
+width:10px;
+height:10px;
+border-radius:999px;
+margin-top:4px;
+background:linear-gradient(135deg, rgba(34,197,94,.95), rgba(45,212,191,.95));
+box-shadow:0 0 0 4px var(--focus);
 }
 
-.input-group{
-margin-bottom:12px;
+.login-wrap{position:relative;width:100%;}.login-card{
+background:var(--card);
+border:1px solid rgba(226,232,240,.95);
+border-radius:18px;
+box-shadow:var(--shadow);
+padding:22px 22px 16px;
 }
 
-.password-wrap{
-position:relative;
-}
+.brand{text-align:center;padding:6px 0 10px;}
+.brand-logo{display:block;margin:0 auto 6px;width:160px;height:auto;}
+.brand-sub{margin-top:4px;font-size:12.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#0b1220;opacity:.92;}
+
+.welcome{text-align:center;font-size:12.5px;color:#0f172a;margin:4px 0 10px;}
+.welcome strong{color:var(--brand-2);}
+
+.empresa-panel{background:#9ca3af;border-radius:8px;padding:10px;margin-bottom:12px;}
+.empresa-label{display:block;font-size:12px;font-weight:700;color:#ffffff;margin-bottom:8px;}
+
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:12px;font-weight:600;color:#64748b;margin:0 0 5px 2px;}
+
+.password-wrap{position:relative;}
 
 input{
 width:100%;
-padding:12px 12px;
-border-radius:10px;
+padding:10px 10px;
+border-radius:9px;
 border:1px solid #c6d3e0;
-font-size:13px;
+font-size:12.5px;
 outline:none;
 transition:border-color .2s, box-shadow .2s, background .2s;
 background:#f8fbff;
 color:#0f172a;
 }
 
-input::placeholder{
-color:#7b8ba0;
-}
+input::placeholder{color:#7b8ba0;}
 
 input:focus{
 border-color:var(--brand);
@@ -305,22 +321,24 @@ padding:6px 8px;
 border-radius:7px;
 box-shadow:none;
 width:auto;
+display:none;
 }
 
-.toggle-pass:hover{
-background:#edf3f8;
-transform:translateY(-50%);
-}
+.toggle-pass:hover{background:#edf3f8;transform:translateY(-50%);}
+
+.check-row{margin:8px 0 10px;}
+.check{display:flex;align-items:center;gap:10px;font-size:12px;color:#0f172a;user-select:none;}
+.check input{width:16px;height:16px;padding:0;border-radius:4px;}
 
 #btnLogin{
 width:100%;
 padding:12px;
 background:linear-gradient(135deg,var(--brand),var(--brand-2));
 border:none;
-border-radius:10px;
+border-radius:9px;
 color:#fff;
 font-weight:700;
-font-size:13px;
+font-size:12.5px;
 letter-spacing:.3px;
 cursor:pointer;
 transition:transform .15s, box-shadow .2s, filter .2s;
@@ -331,15 +349,8 @@ align-items:center;
 box-shadow:0 10px 20px rgba(6,95,70,.28);
 }
 
-#btnLogin:hover{
-filter:brightness(1.03);
-transform:translateY(-1px);
-}
-
-#btnLogin.loading{
-opacity:.72;
-pointer-events:none;
-}
+#btnLogin:hover{filter:brightness(1.03);transform:translateY(-1px);}
+#btnLogin.loading{opacity:.72;pointer-events:none;}
 
 .spinner{
 width:16px;
@@ -352,68 +363,203 @@ margin-left:8px;
 display:none;
 }
 
-@keyframes spin{
-to{transform:rotate(360deg);}
-}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-.message{
-margin-top:9px;
-font-size:12px;
-display:none;
-}
+.message{margin-top:9px;font-size:12px;display:none;}
+.error{color:#dc2626;}
+.success{color:#15803d;}
+.domain-preview{font-size:11px;color:#64748b;margin-top:4px;padding-left:1px;}
+.caps-warning{font-size:11px;color:#b45309;display:none;margin-top:4px;}
 
-.error{
-color:#dc2626;
-}
-
-.success{
-color:#15803d;
-}
-
-.domain-preview{
-font-size:11px;
-color:#64748b;
-margin-top:4px;
-padding-left:1px;
-}
-
-.caps-warning{
-font-size:11px;
-color:#b45309;
-display:none;
-margin-top:4px;
-}
-
-.links{
-margin-top:15px;
-font-size:12px;
+.terms-box{
 display:flex;
-justify-content:space-between;
 gap:10px;
+align-items:flex-start;
+background:#e7f7f0;
+border:1px solid rgba(10,162,138,.25);
+border-radius:9px;
+padding:10px 10px;
+font-size:12px;
+color:#0f172a;
+margin-top:6px;
 }
 
-.links a{
+.terms-box input{width:16px;height:16px;margin-top:2px;}
+.terms-box a{color:var(--brand-2);font-weight:700;text-decoration:none;}
+.terms-box a:hover{text-decoration:underline;}
+
+.forgot{margin-top:10px;display:flex;justify-content:center;}
+.forgot a{
 text-decoration:none;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:7px 12px;
+border-radius:999px;
+border:2px solid rgba(10,162,138,.55);
 color:var(--brand-2);
-font-weight:600;
+font-weight:800;
+font-size:12px;
+transition:background .2s ease, transform .15s ease;
 }
 
-.footer{
-margin-top:16px;
-font-size:11px;
-color:#91a0b5;
+.forgot a:hover{background:rgba(10,162,138,.10);transform:translateY(-1px);}
+
+.support{
+margin-top:10px;
+background:#f3f4f6;
+border:1px solid #e5e7eb;
+border-radius:9px;
+padding:10px 10px;
 text-align:center;
+font-size:12px;
+color:#334155;
 }
+
+.support strong{color:#f97316;}
+
+.support-phone{
+margin-top:6px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:7px;
+padding:7px 12px;
+border-radius:999px;
+border:1px solid rgba(10,162,138,.35);
+background:#ffffff;
+color:var(--brand-2);
+font-weight:800;
+text-decoration:none;
+}
+
+.footer{margin-top:10px;font-size:11px;color:#64748b;text-align:center;}
 
 .app-loading{
 position:fixed;
 inset:0;
-background:rgba(11,18,32,.72);
-backdrop-filter:blur(2px);
 display:none;
 align-items:center;
 justify-content:center;
 z-index:9999;
+background:
+radial-gradient(900px 520px at 15% 20%, rgba(45,212,191,.22) 0%, transparent 60%),
+radial-gradient(820px 520px at 88% 80%, rgba(34,211,153,.18) 0%, transparent 62%),
+linear-gradient(180deg, rgba(2,6,23,.62), rgba(2,6,23,.72));
+backdrop-filter:blur(5px);
+}
+
+.app-loading.active{
+display:flex;
+animation:fadeIn .18s ease-out;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+.app-loading-card{
+width:min(380px, calc(100vw - 40px));
+background:rgba(248,251,255,.92);
+border:1px solid rgba(226,232,240,.95);
+border-radius:18px;
+padding:18px 16px 16px;
+text-align:center;
+box-shadow:0 26px 60px rgba(2,6,23,.35);
+position:relative;
+overflow:hidden;
+}
+
+.app-loading-card::before{
+content:'';
+position:absolute;
+left:-30%;
+top:-40%;
+width:160%;
+height:180%;
+background:
+radial-gradient(circle at 30% 30%, rgba(10,162,138,.22) 0%, transparent 55%),
+radial-gradient(circle at 70% 65%, rgba(34,197,94,.18) 0%, transparent 58%);
+opacity:.9;
+pointer-events:none;
+}
+
+.loading-logo{
+position:relative;
+width:60px;
+height:60px;
+object-fit:contain;
+margin:2px auto 10px;
+padding:10px;
+border-radius:999px;
+background:rgba(255,255,255,.92);
+border:1px solid rgba(226,232,240,.95);
+box-shadow:0 14px 22px rgba(2,6,23,.14);
+}
+.app-loading-title{
+position:relative;
+font-size:14px;
+font-weight:800;
+color:#064e3b;
+margin-bottom:4px;
+}
+
+.loading-hint{
+position:relative;
+font-size:12px;
+color:#64748b;
+margin-bottom:12px;
+}
+
+.loading-progress{
+position:relative;
+height:10px;
+border-radius:999px;
+background:rgba(148,163,184,.22);
+border:1px solid rgba(148,163,184,.25);
+overflow:hidden;
+}
+
+.loading-progress span{
+position:absolute;
+inset:0;
+width:45%;
+border-radius:999px;
+background:linear-gradient(90deg, rgba(10,162,138,.85), rgba(34,197,94,.85));
+box-shadow:0 10px 18px rgba(6,95,70,.22);
+animation:barMove 1.1s ease-in-out infinite;
+}
+
+@keyframes barMove{
+0%{transform:translateX(-60%);opacity:.75;}
+50%{transform:translateX(80%);opacity:1;}
+100%{transform:translateX(210%);opacity:.75;}
+}
+
+.dots{
+position:relative;
+display:flex;
+justify-content:center;
+gap:6px;
+margin-top:10px;
+}
+
+.dots span{
+width:7px;
+height:7px;
+border-radius:999px;
+background:#10b981;
+animation:bounce 1s infinite ease-in-out;
+}
+
+.dots span:nth-child(2){animation-delay:.15s;}
+.dots span:nth-child(3){animation-delay:.3s;}
+
+@keyframes bounce{
+0%,80%,100%{transform:scale(.65);opacity:.55;}
+40%{transform:scale(1);opacity:1;}
+}40%{transform:scale(1);opacity:1;}
 }
 
 .toast{
@@ -429,7 +575,7 @@ border:1px solid #bbf7d0;
 background:#ecfdf5;
 color:#14532d;
 box-shadow:0 14px 28px rgba(2,6,23,.20);
-font-size:13px;
+font-size:12.5px;
 font-weight:600;
 opacity:0;
 transform:translateY(-8px);
@@ -437,53 +583,7 @@ pointer-events:none;
 transition:opacity .22s ease, transform .22s ease;
 }
 
-.toast.show{
-opacity:1;
-transform:translateY(0);
-}
-
-.app-loading.active{
-display:flex;
-}
-
-.app-loading-card{
-min-width:260px;
-background:#ffffff;
-border:1px solid #e2e8f0;
-border-radius:16px;
-padding:18px 16px;
-text-align:center;
-box-shadow:0 16px 34px rgba(15,23,42,.28);
-}
-
-.app-loading-title{
-font-size:14px;
-font-weight:600;
-color:#065f46;
-margin-bottom:8px;
-}
-
-.dots{
-display:flex;
-justify-content:center;
-gap:6px;
-}
-
-.dots span{
-width:8px;
-height:8px;
-border-radius:999px;
-background:#10b981;
-animation:bounce 1s infinite ease-in-out;
-}
-
-.dots span:nth-child(2){animation-delay:.15s;}
-.dots span:nth-child(3){animation-delay:.3s;}
-
-@keyframes bounce{
-0%,80%,100%{transform:scale(.65);opacity:.55;}
-40%{transform:scale(1);opacity:1;}
-}
+.toast.show{opacity:1;transform:translateY(0);}
 
 .modal{
 position:fixed;
@@ -496,9 +596,7 @@ z-index:10001;
 padding:16px;
 }
 
-.modal.active{
-display:flex;
-}
+.modal.active{display:flex;}
 
 .modal-card{
 width:100%;
@@ -510,143 +608,118 @@ padding:16px;
 box-shadow:0 20px 45px rgba(15,23,42,.35);
 }
 
-.modal-title{
-font-size:.95rem;
-font-weight:700;
-color:#065f46;
-margin-bottom:6px;
-}
+.modal-title{font-size:.95rem;font-weight:700;color:#065f46;margin-bottom:6px;}
+.modal-sub{font-size:.8rem;color:#64748b;margin-bottom:10px;}
 
-.modal-sub{
-font-size:.8rem;
-color:#64748b;
-margin-bottom:10px;
-}
+.modal-actions{display:flex;gap:7px;margin-top:10px;}
 
-.modal-actions{
-display:flex;
-gap:8px;
-margin-top:10px;
-}
+.modal-actions button,.btn-ghost{width:100%;padding:10px;border-radius:9px;font-weight:600;cursor:pointer;}
 
-.modal-actions button,
-.btn-ghost{
-width:100%;
-padding:10px;
-border-radius:9px;
-font-weight:600;
-cursor:pointer;
-}
+.modal-actions button{background:linear-gradient(135deg,var(--brand),var(--brand-2));border:none;color:#fff;}
 
-.modal-actions button{
-background:linear-gradient(135deg,var(--brand),var(--brand-2));
-border:none;
-color:#fff;
-}
+.btn-ghost{border:1px solid #d1d5db;background:#fff;color:#334155;}
 
-.btn-ghost{
-border:1px solid #d1d5db;
-background:#fff;
-color:#334155;
-}
-
-@media(max-width:1080px){
-.left h1{font-size:40px;}
-.left p{font-size:17px;}
-body{grid-template-columns:minmax(0,1fr) 430px;}
-}
-
-@media(max-width:950px){
-body{
-display:flex;
-align-items:center;
-justify-content:center;
-padding:18px;
-}
-.left{display:none;}
-.right{
-width:100%;
-max-width:500px;
-min-width:0;
-padding:0;
-background:transparent;
-border-left:none;
-}
-.login-box{max-width:500px;}
-.intro-logo{font-size:34px;}
-.intro-sub{font-size:14px;}
+@media(max-width:900px){
+body{padding:18px;}
+.decor{display:none;}
+.layout{max-width:520px;}
+.login-card{padding:22px 18px 16px;}
+.brand-logo{width:160px;}
 }
 </style>
 </head>
 
-<body class="form-ready">
+<body>
 
-<div class="intro-screen" id="introScreen" style="display:none">
-  <div class="intro-card">
-    <div class="intro-logo">+<span>FarmaPOS</span></div>
-    <div class="intro-sub">Gestiona tu farmacia de forma profesional: ventas, inventario y reportes en una sola plataforma.</div>
-    <button type="button" class="intro-enter" id="introEnter">Entrar al sistema</button>
-  </div>
+<div class="stage" aria-hidden="true">
+  <div class="decor decor-tablet"></div>
+  <div class="decor decor-monitor"></div>
+  <div class="decor decor-phone"></div>
+  <div class="decor decor-printer"></div>
 </div>
 
-<div class="left">
-<div class="hero-copy">
-<div class="hero-tag">Sistema POS en la nube</div>
-<h1>Plataforma Empresarial en la Nube</h1>
-<p>Administra ventas, inventario y facturacion desde cualquier lugar con FarmaPOS Cloud.</p>
-</div>
-<div class="floating f1"></div>
-<div class="floating f2"></div>
-<div class="floating f3"></div>
-</div>
+<div class="layout">
+  <main class="login-wrap">
+    <section class="login-card">
+      <div class="brand">
+        <img src="image/Logo.png" class="brand-logo" alt="FarmaPOS">
+        <div class="brand-sub">Sistema de Facturacion</div>
+      </div>
 
-<div class="right">
-<div class="login-box">
+    <div class="welcome"><strong>BIENVENIDO</strong> Por favor inicia con tu cuenta de usuario.</div>
 
-<div class="logo">+<span>FarmaPOS</span></div>
-<div class="subtitle">Accede a tu cuenta empresarial</div>
+    <div class="login-features" role="list" aria-label="Caracteristicas">
+      <div class="login-features-title">Todo en un solo lugar</div>
+      <div class="feature" role="listitem"><span class="dot" aria-hidden="true"></span><div>Ventas rapidas, turnos y control de caja.</div></div>
+      <div class="feature" role="listitem"><span class="dot" aria-hidden="true"></span><div>Inventario con alertas por stock critico y vencimientos.</div></div>
+      <div class="feature" role="listitem"><span class="dot" aria-hidden="true"></span><div>Reportes claros para decisiones diarias.</div></div>
+    </div>
 
-<div class="input-group">
-<input type="text" id="empresa" placeholder="Empresa / Dominio">
-<div class="domain-preview" id="preview"></div>
-</div>
+    <div class="empresa-panel">
+      <label class="empresa-label" for="empresa">Empresa (Usuario principal)</label>
+      <input type="text" id="empresa" placeholder="Empresa / Dominio" autocomplete="organization">
+      <div class="domain-preview" id="preview"></div>
+    </div>
 
-<div class="input-group">
-<input type="text" id="usuario" placeholder="Usuario">
-</div>
+    <div class="field">
+      <label for="usuario">Usuario</label>
+      <input type="text" id="usuario" placeholder="Usuario" autocomplete="username">
+    </div>
 
-<div class="input-group">
-<div class="password-wrap">
-  <input type="password" id="clave" placeholder="Contrasena">
-  <button type="button" class="toggle-pass" id="togglePass">VER</button>
-</div>
-<div class="caps-warning" id="capsWarning">Caps Lock esta activado.</div>
-</div>
+    <div class="field">
+      <label for="clave">Contraseña</label>
+      <div class="password-wrap">
+        <input type="password" id="clave" placeholder="Contraseña" autocomplete="current-password">
+        <button type="button" class="toggle-pass" id="togglePass">VER</button>
+      </div>
+      <div class="caps-warning" id="capsWarning">Caps Lock está activado.</div>
+    </div>
 
-<button id="btnLogin" onclick="login()">
-INICIAR SESION
-<div class="spinner" id="spinner"></div>
-</button>
+    <div class="check-row">
+      <label class="check">
+        <input type="checkbox" id="showPass">
+        <span>Mostrar Contraseña</span>
+      </label>
+    </div>
 
-<div class="message error" id="errorMsg"></div>
-<div class="message success" id="successMsg"></div>
+    <div class="terms-box">
+      <input type="checkbox" id="acceptTerms">
+      <div>
+        Al continuar, confirmas que has leído y aceptas nuestros <a href="#">Términos y condiciones</a> y <a href="#">Política de Tratamiento de Datos</a>.
+      </div>
+    </div>
 
-<div class="links">
-<a href="#" id="linkRecover">Olvidaste tu contrasena?</a>
-<a href="#">Soporte</a>
-</div>
+    <button id="btnLogin" type="button" onclick="login()">
+      INICIAR SESIÓN
+      <div class="spinner" id="spinner"></div>
+    </button>
 
-<div class="footer">
-&copy; 2026 FarmaPOS Cloud
-</div>
+    <div class="message error" id="errorMsg"></div>
+    <div class="message success" id="successMsg"></div>
 
-</div>
+    <div class="forgot">
+      <a href="#" id="linkRecover">¿Has olvidado tu contraseña?</a>
+    </div>
+
+    <div class="support">
+      <strong>¿Tienes problemas para ingresar?</strong> Estamos aquí para ayudarte. Contáctanos a nuestra línea de soporte.
+      <div>
+        <a class="support-phone" href="tel:+573132181035">+57 (313) 218 1035</a>
+      </div>
+    </div>
+
+    <div class="footer">&copy; 2026 FarmaPOS Cloud</div>
+  </section>
+</main>
 </div>
 
 <div class="app-loading" id="appLoading">
-  <div class="app-loading-card">
+  <div class="app-loading-card" role="status" aria-live="polite" aria-busy="true">
+    <img class="loading-logo" src="image/Logo.png" alt="FarmaPOS">
     <div class="app-loading-title" id="appLoadingText">Validando acceso...</div>
-    <div class="dots"><span></span><span></span><span></span></div>
+    <div class="loading-hint">Procesando de forma segura. No cierres esta ventana.</div>
+    <div class="loading-progress" aria-hidden="true"><span></span></div>
+    <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
   </div>
 </div>
 
@@ -657,10 +730,13 @@ INICIAR SESION
     <div class="modal-title">Recuperar contrasena</div>
     <div class="modal-sub">Ingresa tu usuario para generar una clave temporal.</div>
 
-    <div class="input-group">
+    <div class="field">
+      <label for="recoverEmpresa">Empresa / Dominio (opcional)</label>
       <input type="text" id="recoverEmpresa" placeholder="Empresa / Dominio (opcional)">
     </div>
-    <div class="input-group">
+
+    <div class="field">
+      <label for="recoverUsuario">Usuario</label>
       <input type="text" id="recoverUsuario" placeholder="Usuario">
     </div>
 
@@ -676,7 +752,7 @@ INICIAR SESION
 
 <script>
 
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzJ1B5fF46bkkXLJfgF5LAKUwE0IvtfZJ_1wEC1x2PKgp8-ENh6V-Rp4apQyMEuYvSE/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyASz5b-4Wb98N-_bKS5DP9qUUMqzFxpfnR2N8adVzD9uAdKTPY6_42o2rIuJA2efaZ/exec";
 const empresaInput = document.getElementById("empresa");
 const preview = document.getElementById("preview");
 const appLoading = document.getElementById("appLoading");
@@ -685,20 +761,8 @@ const recoverModal = document.getElementById("recoverModal");
 const claveInput = document.getElementById("clave");
 const capsWarning = document.getElementById("capsWarning");
 const togglePass = document.getElementById("togglePass");
-const introScreen = document.getElementById("introScreen");
-const introEnter = document.getElementById("introEnter");
 const toastMsg = document.getElementById("toastMsg");
-
-function showLoginForm(){
-if(!document.body.classList.contains("prelogin")) return;
-document.body.classList.remove("prelogin");
-document.body.classList.add("form-ready");
-introScreen.classList.add("hide");
-setTimeout(()=>{ introScreen.style.display = "none"; }, 460);
-setTimeout(()=>{ empresaInput.focus(); }, 220);
-}
-
-introEnter.addEventListener("click", showLoginForm);
+const showPass = document.getElementById("showPass");
 
 empresaInput.addEventListener("input",()=>{
 let value = empresaInput.value.trim().toLowerCase();
@@ -710,11 +774,23 @@ e.preventDefault();
 openRecoverModal();
 });
 
+function setPasswordVisible(visible){
+claveInput.type = visible ? "text" : "password";
+if(togglePass){ togglePass.innerText = visible ? "OCULTAR" : "VER"; }
+if(showPass){ showPass.checked = visible; }
+}
+
+if(togglePass){
 togglePass.addEventListener("click",()=>{
-const isHidden = claveInput.type === "password";
-claveInput.type = isHidden ? "text" : "password";
-togglePass.innerText = isHidden ? "OCULTAR" : "VER";
+setPasswordVisible(claveInput.type === "password");
 });
+}
+
+if(showPass){
+showPass.addEventListener("change",()=>{
+setPasswordVisible(!!showPass.checked);
+});
+}
 
 claveInput.addEventListener("keydown",(e)=>{
 if(e.getModifierState && e.getModifierState("CapsLock")){
@@ -731,13 +807,6 @@ capsWarning.style.display = "none";
 });
 
 document.addEventListener("keydown",(e)=>{
-if(document.body.classList.contains("prelogin")){
-if(e.key === "Enter"){
-e.preventDefault();
-showLoginForm();
-}
-return;
-}
 if(e.key === "Escape" && recoverModal.classList.contains("active")){
 closeRecoverModal();
 }
@@ -952,7 +1021,6 @@ break;
 }
 
   const lic = resolveLicenseInfo(headers, data[i] || []);
-  // No bloqueamos el acceso por licencia: solo guardamos el estado en session/localStorage.
 
   acceso = true;
 

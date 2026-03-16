@@ -1,4 +1,4 @@
-var API_URL = "https://script.google.com/macros/s/AKfycbzJ1B5fF46bkkXLJfgF5LAKUwE0IvtfZJ_1wEC1x2PKgp8-ENh6V-Rp4apQyMEuYvSE/exec";
+﻿var API_URL = "https://script.google.com/macros/s/AKfycbyASz5b-4Wb98N-_bKS5DP9qUUMqzFxpfnR2N8adVzD9uAdKTPY6_42o2rIuJA2efaZ/exec";
 var fallback={summary:{totalProducts:120,criticalStock:9,expiringCount:18},rows:[{producto:"Amoxicilina 500mg",lote:"AMX-212",stock:3,stock_min:10,precio_venta:12000,vencimiento:"2026-03-20",estado:"Critico",level:"danger"},{producto:"Ibuprofeno jarabe",lote:"IBU-808",stock:10,stock_min:8,precio_venta:8500,vencimiento:"2026-03-05",estado:"Por vencer",level:"warn"},{producto:"Vitamina C",lote:"VIT-123",stock:45,stock_min:10,precio_venta:15000,vencimiento:"2026-11-22",estado:"Normal",level:"ok"}]};
 var isEditMode=false;
 var originalKey={producto:"",lote:""};
@@ -151,7 +151,7 @@ function ensureZXingInv(){
     var script=document.createElement("script");
     script.src="https://unpkg.com/@zxing/library@0.21.2/umd/index.min.js";
     script.onload=function(){ zxingLibInv = window.ZXing; resolve(zxingLibInv); };
-    script.onerror=function(){ reject(new Error("No se pudo cargar el lector de códigos.")); };
+    script.onerror=function(){ reject(new Error("No se pudo cargar el lector de cÃ³digos.")); };
     document.head.appendChild(script);
   });
 }
@@ -161,7 +161,7 @@ function openScanModalInv(){
   if(!modal) return;
   modal.classList.add("active");
   var status=document.getElementById("scanStatusInv");
-  if(status) status.textContent="Apunta la cámara al código de barras.";
+  if(status) status.textContent="Apunta la cÃ¡mara al cÃ³digo de barras.";
   startScanCameraInv();
 }
 
@@ -171,10 +171,10 @@ async function startScanCameraInv(){
   if(!video) return;
   try{
     stopScanCameraInv(true);
-    if(status) status.textContent="Activando cámara...";
+    if(status) status.textContent="Activando cÃ¡mara...";
 
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-      if(status) status.textContent="Tu navegador no permite usar la cámara.";
+      if(status) status.textContent="Tu navegador no permite usar la cÃ¡mara.";
       return;
     }
 
@@ -188,11 +188,11 @@ async function startScanCameraInv(){
           if(result){
             handleDetectedCodeInv(result.getText());
           }else if(status && err && !(err instanceof ZX.NotFoundException)){
-            status.textContent="Sin lectura, mueve el código frente a la cámara.";
+            status.textContent="Sin lectura, mueve el cÃ³digo frente a la cÃ¡mara.";
           }
         });
       }catch(e){
-        if(status) status.textContent="No se pudo abrir la cámara: "+(e && e.message ? e.message : "error");
+        if(status) status.textContent="No se pudo abrir la cÃ¡mara: "+(e && e.message ? e.message : "error");
       }
       return;
     }
@@ -200,7 +200,7 @@ async function startScanCameraInv(){
     scanStreamInv = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}}});
     video.srcObject = scanStreamInv;
     await video.play();
-    if(status) status.textContent="Buscando código...";
+    if(status) status.textContent="Buscando cÃ³digo...";
 
     var detector = new BarcodeDetector({formats:["ean_13","ean_8","code_128","code_39","upc_a","upc_e","qr_code"]});
     var loop = async function(){
@@ -216,7 +216,7 @@ async function startScanCameraInv(){
     };
     scanLoopInv = requestAnimationFrame(loop);
   }catch(e){
-    if(status) status.textContent="No se pudo usar la cámara: "+(e && e.message ? e.message : "permiso denegado");
+    if(status) status.textContent="No se pudo usar la cÃ¡mara: "+(e && e.message ? e.message : "permiso denegado");
   }
 }
 
@@ -224,10 +224,10 @@ function handleDetectedCodeInv(code){
   var clean=String(code||"").trim();
   var status=document.getElementById("scanStatusInv");
   if(!clean){
-    if(status) status.textContent="No se leyó el código. Intenta de nuevo.";
+    if(status) status.textContent="No se leyÃ³ el cÃ³digo. Intenta de nuevo.";
     return;
   }
-  if(status) status.textContent="Código detectado: "+clean;
+  if(status) status.textContent="CÃ³digo detectado: "+clean;
   var input=document.getElementById("fCodigo");
   if(input) input.value=clean;
   stopScanCameraInv();
@@ -453,7 +453,7 @@ function loadInventory(){
        }
        if(sync){
          var count = (data && Array.isArray(data.rows)) ? data.rows.length : 0;
-         sync.textContent="Nube OK ("+count+" items) · "+new Date().toLocaleTimeString("es-CO");
+         sync.textContent="Nube OK ("+count+" items) Â· "+new Date().toLocaleTimeString("es-CO");
        }
      })
      .catch(function(e){

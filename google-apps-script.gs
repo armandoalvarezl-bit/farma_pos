@@ -1,4 +1,4 @@
-/**
+﻿/**
  * FarmaPOS Web App endpoint for Google Apps Script.
  *
  * Supported actions:
@@ -156,7 +156,7 @@ function recoverPassword_(payload) {
   }
 
   var usuarioIdx = pickIndex_(map, ['usuario', 'user', 'login']);
-  var passIdx = pickIndex_(map, ['contrasena', 'contraseña', 'clave', 'password', 'pass']);
+  var passIdx = pickIndex_(map, ['contrasena', 'contraseÃ±a', 'clave', 'password', 'pass']);
   var empresaIdx = pickIndex_(map, ['empresa', 'dominio', 'tenant']);
   var estadoIdx = pickIndex_(map, ['estado', 'status']);
 
@@ -268,7 +268,7 @@ function activateLicense_(payload) {
   var planMonths = toNumber_(monthsIdx === -1 ? 0 : row[monthsIdx]);
   if (!planMonths && planName) {
     var p = planName.toLowerCase();
-    if (p.indexOf('12') !== -1 || p.indexOf('anual') !== -1 || p.indexOf('ano') !== -1 || p.indexOf('año') !== -1) planMonths = 12;
+    if (p.indexOf('12') !== -1 || p.indexOf('anual') !== -1 || p.indexOf('ano') !== -1 || p.indexOf('aÃ±o') !== -1) planMonths = 12;
     else if (p.indexOf('6') !== -1 || p.indexOf('semes') !== -1) planMonths = 6;
     else if (p.indexOf('3') !== -1 || p.indexOf('trimes') !== -1) planMonths = 3;
   }
@@ -1068,13 +1068,15 @@ function getAvailableStockByProduct_(sheet, map, empresa, producto) {
   if (productIdx === -1 || stockIdx === -1) return 0;
 
   var total = 0;
-  var wantedEmpresa = String(empresa || '').trim().toLowerCase();
-  var wantedProducto = String(producto || '').trim().toLowerCase();
+  // Use the same normalization used for headers so accents/spaces/case won't block sales.
+  var wantedEmpresaKey = normalizeKey_(empresa);
+  var wantedProductoKey = normalizeKey_(producto);
   for (var i = 1; i < values.length; i++) {
-    var rowEmpresa = empresaIdx === -1 ? '' : String(values[i][empresaIdx] || '').trim().toLowerCase();
-    var rowProducto = String(values[i][productIdx] || '').trim().toLowerCase();
-    if (rowProducto !== wantedProducto) continue;
-    if (wantedEmpresa && empresaIdx !== -1 && rowEmpresa && rowEmpresa !== wantedEmpresa) continue;
+    var rowEmpresaKey = empresaIdx === -1 ? '' : normalizeKey_(values[i][empresaIdx]);
+    var rowProductoKey = normalizeKey_(values[i][productIdx]);
+    if (rowProductoKey !== wantedProductoKey) continue;
+    // If the row has an empresa value, it must match the requested empresa.
+    if (wantedEmpresaKey && empresaIdx !== -1 && rowEmpresaKey && rowEmpresaKey !== wantedEmpresaKey) continue;
     total += toNumber_(values[i][stockIdx]);
   }
   return total;
@@ -1088,15 +1090,15 @@ function deductInventoryByProduct_(sheet, map, empresa, producto, quantity) {
   var expIdx = pickIndex_(map, ['vencimiento', 'fecha_vencimiento', 'expires']);
   if (productIdx === -1 || stockIdx === -1) return;
 
-  var wantedEmpresa = String(empresa || '').trim().toLowerCase();
-  var wantedProducto = String(producto || '').trim().toLowerCase();
+  var wantedEmpresaKey = normalizeKey_(empresa);
+  var wantedProductoKey = normalizeKey_(producto);
   var candidates = [];
 
   for (var i = 1; i < values.length; i++) {
-    var rowEmpresa = empresaIdx === -1 ? '' : String(values[i][empresaIdx] || '').trim().toLowerCase();
-    var rowProducto = String(values[i][productIdx] || '').trim().toLowerCase();
-    if (rowProducto !== wantedProducto) continue;
-    if (wantedEmpresa && empresaIdx !== -1 && rowEmpresa && rowEmpresa !== wantedEmpresa) continue;
+    var rowEmpresaKey = empresaIdx === -1 ? '' : normalizeKey_(values[i][empresaIdx]);
+    var rowProductoKey = normalizeKey_(values[i][productIdx]);
+    if (rowProductoKey !== wantedProductoKey) continue;
+    if (wantedEmpresaKey && empresaIdx !== -1 && rowEmpresaKey && rowEmpresaKey !== wantedEmpresaKey) continue;
 
     var stock = toNumber_(values[i][stockIdx]);
     if (stock <= 0) continue;

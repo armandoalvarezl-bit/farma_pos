@@ -1,0 +1,645 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pedidos | FarmaPOS</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="image/Logo.png" />
+
+<style>
+
+:root{
+--bg:#ecfdf5;
+--panel:#fff;
+--line:#d1fae5;
+--ink:#0f172a;
+--muted:#64748b;
+--brand:#065f46;
+--brand2:#10b981;
+--warn:#d97706
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:"Poppins",sans-serif
+}
+
+body{
+background:var(--bg);
+color:var(--ink);
+min-height:100vh;
+overflow-x:hidden
+}
+
+.layout{
+display:block;
+padding-left:270px;
+min-height:100vh;
+width:100%
+}
+
+.sidebar{
+background:linear-gradient(180deg,#064e3b 0%,#022c22 100%);
+color:#ecfdf5;
+padding:24px 18px;
+position:fixed;
+top:0;
+left:0;
+bottom:0;
+width:270px;
+overflow-y:auto;
+z-index:1200
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:700;
+font-size:1.2rem;
+margin-bottom:24px
+}
+
+.brand-logo{
+width:36px;
+height:36px;
+border-radius:10px;
+object-fit:contain;
+background:rgba(255,255,255,0.16);
+padding:4px
+}
+
+.menu a{
+display:flex;
+align-items:center;
+gap:10px;
+color:#d1fae5;
+text-decoration:none;
+padding:10px 12px;
+border-radius:11px;
+margin-bottom:6px;
+transition:.25s
+}
+
+.menu a.active,
+.menu a:hover{
+background:rgba(255,255,255,.13);
+color:#fff
+}
+
+.main{
+padding:22px 18px 28px;
+width:100%
+}
+
+/* TOP */
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:10px;
+background:var(--panel);
+border:1px solid var(--line);
+padding:14px;
+border-radius:12px;
+margin-bottom:14px;
+box-shadow:0 10px 26px rgba(2,44,34,.08)
+}
+
+.top-left{
+display:flex;
+align-items:center;
+gap:12px
+}
+
+.module-title{
+font-weight:700;
+font-size:1rem;
+display:flex;
+align-items:center;
+gap:6px
+}
+
+.logout{
+border:1px solid #bbf7d0;
+background:#f0fdf4;
+color:#065f46;
+padding:7px 10px;
+border-radius:8px;
+cursor:pointer
+}
+
+/* KPI */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:12px;
+margin-bottom:14px
+}
+
+.card{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:14px;
+padding:16px;
+box-shadow:0 10px 26px rgba(2,44,34,.08);
+transition:.25s
+}
+
+.card:hover{
+transform:translateY(-2px)
+}
+
+.muted{
+color:var(--muted);
+font-size:.85rem
+}
+
+.big{
+font-size:1.4rem;
+font-weight:700;
+color:var(--brand)
+}
+
+/* FORM */
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(6,minmax(0,1fr));
+gap:10px;
+margin-top:10px
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea{
+width:100%;
+padding:10px;
+border:1px solid #cbd5e1;
+border-radius:9px;
+font-size:.9rem
+}
+
+.form-grid textarea{
+grid-column:span 2;
+min-height:44px;
+resize:vertical
+}
+
+.form-grid input:focus,
+.form-grid select:focus,
+.form-grid textarea:focus{
+outline:none;
+border-color:#10b981;
+box-shadow:0 0 0 3px rgba(16,185,129,.15)
+}
+
+/* BOTONES */
+
+.btn{
+border:none;
+background:linear-gradient(135deg,var(--brand),var(--brand2));
+color:#fff;
+padding:11px 12px;
+border-radius:10px;
+cursor:pointer;
+font-weight:700
+}
+
+.btn.secondary{
+background:#e2e8f0;
+color:#0f172a;
+border:1px solid #cbd5e1
+}
+
+.btn:hover{
+transform:translateY(-1px)
+}
+
+/* TABLA */
+
+.table{
+width:100%;
+border-collapse:collapse;
+margin-top:12px;
+table-layout:fixed
+}
+
+.table thead{
+background:#f0fdf4
+}
+
+.table th,
+.table td{
+padding:10px 8px;
+border-bottom:1px solid #ecfeff;
+text-align:left;
+font-size:.9rem;
+word-break:break-word
+}
+
+/* ESTADOS */
+
+.status{
+display:inline-flex;
+align-items:center;
+gap:6px;
+padding:5px 11px;
+border-radius:999px;
+font-size:.78rem;
+font-weight:700;
+text-transform:capitalize
+}
+
+.status.enviado{background:#e0f2fe;color:#0369a1}
+.status.recibido{background:#dcfce7;color:#166534}
+.status.pendiente{background:#fff7ed;color:#b45309}
+.status.cancelado{background:#fee2e2;color:#b91c1c}
+
+/* ACCIONES */
+
+.actions button{
+margin-right:6px;
+padding:7px 10px;
+border-radius:8px
+}
+
+/* MENU MOBILE */
+
+.menu-toggle{
+display:none;
+border:1px solid #cdeee2;
+background:#fff;
+color:#065f46;
+border-radius:8px;
+padding:6px 9px;
+cursor:pointer
+}
+
+.sidebar-overlay{
+display:none
+}
+
+@media(max-width:860px){
+
+.layout{padding-left:0}
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+bottom:0;
+width:270px;
+z-index:50;
+transform:translateX(-110%);
+transition:transform .2s ease;
+box-shadow:0 18px 60px rgba(2,44,34,.22)
+}
+
+.menu-toggle{
+display:inline-flex;
+align-items:center;
+justify-content:center
+}
+
+.sidebar-overlay{
+display:block;
+position:fixed;
+inset:0;
+background:rgba(2,44,34,.35);
+backdrop-filter:blur(2px);
+z-index:40;
+opacity:0;
+pointer-events:none;
+transition:opacity .2s ease
+}
+
+.layout.sidebar-open .sidebar{transform:translateX(0)}
+.layout.sidebar-open .sidebar-overlay{opacity:1;pointer-events:auto}
+
+.grid{grid-template-columns:1fr}
+.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="brand">
+<img src="image/Logo.png" class="brand-logo">
+<div>FarmaPOS</div>
+</div>
+
+<nav class="menu">
+<a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+<a href="pos.html"><i class="bi bi-cart-plus"></i> Ventas</a>
+<a href="inventario.html"><i class="bi bi-box-seam"></i> Inventario</a>
+<a href="reportes.html"><i class="bi bi-file-earmark-bar-graph"></i> Reportes</a>
+<a href="pedidos.html" class="active"><i class="bi bi-truck"></i> Pedidos</a>
+</nav>
+
+</aside>
+
+<div class="sidebar-overlay" onclick="toggleSidebar(false)"></div>
+
+<main class="main">
+
+<section class="top">
+
+<div class="top-left">
+<button class="menu-toggle" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+
+<div>
+<div class="module-title"><i class="bi bi-truck"></i> Pedidos a laboratorios</div>
+<div class="muted">Seguimiento de pedidos y recepciones</div>
+</div>
+</div>
+
+<button class="logout" onclick="logout()">
+<i class="bi bi-box-arrow-right"></i> Cerrar sesión
+</button>
+
+</section>
+
+<section class="grid">
+<article class="card"><div class="muted">Pedidos en curso</div><div class="big" id="kpiOpen">0</div></article>
+<article class="card"><div class="muted">Recibidos (mes)</div><div class="big" id="kpiReceived">0</div></article>
+<article class="card"><div class="muted">Total pendiente</div><div class="big" id="kpiValue">$0</div></article>
+</section>
+
+<section class="card">
+
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+<div style="font-weight:600">Crear / actualizar pedido</div>
+<div class="muted" id="formStatus"></div>
+</div>
+
+<div class="form-grid">
+
+<input id="lab" placeholder="Laboratorio / Proveedor">
+<input id="contacto" placeholder="Contacto / Asesor">
+<input id="referencia" placeholder="Referencia">
+<input id="monto" type="number" step="0.01" placeholder="Monto esperado ($)">
+<input id="fechaEnvio" type="date">
+<input id="fechaEntrega" type="date">
+
+<select id="estado">
+<option value="pendiente">Pendiente</option>
+<option value="enviado">Enviado</option>
+<option value="recibido">Recibido</option>
+<option value="cancelado">Cancelado</option>
+</select>
+
+<textarea id="notas" placeholder="Notas"></textarea>
+
+</div>
+
+<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn" onclick="guardarPedido()">Guardar</button>
+<button class="btn secondary" onclick="limpiarForm()">Limpiar</button>
+</div>
+
+</section>
+
+<section class="card" style="margin-top:14px">
+
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+<div style="font-weight:600">Seguimiento</div>
+<input id="busqueda" placeholder="Buscar por laboratorio o referencia..." style="padding:10px;border:1px solid #cbd5e1;border-radius:9px;min-width:220px">
+</div>
+
+<table class="table">
+<thead>
+<tr>
+<th>Laboratorio</th>
+<th>Referencia</th>
+<th>Monto</th>
+<th>Envío</th>
+<th>Entrega</th>
+<th>Estado</th>
+<th>Notas</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody id="pedidoRows">
+<tr>
+<td colspan="8" style="text-align:center;color:var(--muted)">
+Sin pedidos aún.
+</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+
+</main>
+
+</div>
+
+<script>
+
+/* TU JAVASCRIPT ORIGINAL SIN CAMBIOS */
+
+const STORAGE_KEY="pedidos_lab";
+let editIndex=null;
+
+function logout(){window.location.href="index.html";}
+
+function toggleSidebar(force){
+const layout=document.querySelector(".layout");
+if(force===false){layout.classList.remove("sidebar-open");return;}
+layout.classList.toggle("sidebar-open");
+}
+
+function money(v){return "$"+Number(v||0).toLocaleString("es-CO");}
+
+function escapeHtml(str){
+return String(str||"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+}[c]));
+}
+
+function loadPedidos(){
+const raw=localStorage.getItem(STORAGE_KEY);
+try{return raw?JSON.parse(raw):[]}catch(e){return[];}
+}
+
+function savePedidos(list){
+localStorage.setItem(STORAGE_KEY,JSON.stringify(list));
+}
+
+function actualizarKpi(){
+const list=loadPedidos();
+
+document.getElementById("kpiOpen").textContent=
+list.filter(p=>p.estado!=="recibido"&&p.estado!=="cancelado").length;
+
+const now=new Date();
+const month=now.getMonth();
+const year=now.getFullYear();
+
+document.getElementById("kpiReceived").textContent=
+list.filter(p=>p.estado==="recibido")
+.filter(p=>{
+const d=p.fechaEntrega?new Date(p.fechaEntrega):null;
+return d&&d.getFullYear()===year&&d.getMonth()===month;
+}).length;
+
+const pendingTotal=list
+.filter(p=>p.estado!=="recibido"&&p.estado!=="cancelado")
+.reduce((s,p)=>s+Number(p.monto||0),0);
+
+document.getElementById("kpiValue").textContent=money(pendingTotal);
+}
+
+function limpiarForm(){
+editIndex=null;
+["lab","contacto","referencia","monto","fechaEnvio","fechaEntrega","notas"].forEach(id=>{
+document.getElementById(id).value="";
+});
+document.getElementById("estado").value="pendiente";
+document.getElementById("formStatus").textContent="";
+}
+
+function guardarPedido(){
+
+const lab=document.getElementById("lab").value.trim();
+
+if(!lab){
+document.getElementById("formStatus").textContent="El laboratorio es obligatorio.";
+return;
+}
+
+const pedido={
+lab,
+contacto:document.getElementById("contacto").value.trim(),
+referencia:document.getElementById("referencia").value.trim(),
+monto:Number(document.getElementById("monto").value||0),
+fechaEnvio:document.getElementById("fechaEnvio").value,
+fechaEntrega:document.getElementById("fechaEntrega").value,
+estado:document.getElementById("estado").value,
+notas:document.getElementById("notas").value.trim()
+};
+
+const list=loadPedidos();
+
+if(editIndex!==null)list[editIndex]=pedido;
+else list.push(pedido);
+
+savePedidos(list);
+renderPedidos();
+limpiarForm();
+
+document.getElementById("formStatus").textContent="Pedido guardado.";
+}
+
+function editar(idx){
+
+const p=loadPedidos()[idx];
+if(!p)return;
+
+editIndex=idx;
+
+document.getElementById("lab").value=p.lab||"";
+document.getElementById("contacto").value=p.contacto||"";
+document.getElementById("referencia").value=p.referencia||"";
+document.getElementById("monto").value=p.monto||"";
+document.getElementById("fechaEnvio").value=p.fechaEnvio||"";
+document.getElementById("fechaEntrega").value=p.fechaEntrega||"";
+document.getElementById("estado").value=p.estado||"pendiente";
+document.getElementById("notas").value=p.notas||"";
+
+document.getElementById("formStatus").textContent="Editando pedido…";
+
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function cambiarEstado(idx,estado){
+
+const list=loadPedidos();
+if(!list[idx])return;
+
+list[idx].estado=estado;
+
+savePedidos(list);
+renderPedidos();
+}
+
+function borrar(idx){
+
+const list=loadPedidos();
+if(!list[idx])return;
+
+list.splice(idx,1);
+
+savePedidos(list);
+renderPedidos();
+}
+
+function renderPedidos(){
+
+const rows=document.getElementById("pedidoRows");
+const search=(document.getElementById("busqueda").value||"").toLowerCase();
+
+const data=loadPedidos().filter(p=>
+!search||
+(p.lab||"").toLowerCase().includes(search)||
+(p.referencia||"").toLowerCase().includes(search)
+);
+
+rows.innerHTML="";
+
+if(!data.length){
+rows.innerHTML="<tr><td colspan='8' style='text-align:center;color:var(--muted)'>Sin pedidos.</td></tr>";
+actualizarKpi();
+return;
+}
+
+data.forEach((p,idx)=>{
+
+const estado=(p.estado||"pendiente").toLowerCase();
+
+rows.innerHTML+=`
+<tr>
+<td>${escapeHtml(p.lab||"-")}</td>
+<td>${escapeHtml(p.referencia||"-")}</td>
+<td>${money(p.monto)}</td>
+<td>${escapeHtml(p.fechaEnvio||"-")}</td>
+<td>${escapeHtml(p.fechaEntrega||"-")}</td>
+<td><span class="status ${escapeHtml(estado)}">${escapeHtml(estado)}</span></td>
+<td>${escapeHtml(p.notas||"-")}</td>
+<td class="actions">
+<button class="btn secondary" onclick="editar(${idx})">Editar</button>
+<button class="btn secondary" onclick="cambiarEstado(${idx},'recibido')">Recibido</button>
+<button class="btn secondary" onclick="borrar(${idx})">Borrar</button>
+</td>
+</tr>`;
+});
+
+actualizarKpi();
+}
+
+document.getElementById("busqueda").addEventListener("input",renderPedidos);
+renderPedidos();
+
+</script>
+
+</body>
+</html>
+```

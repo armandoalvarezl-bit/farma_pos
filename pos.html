@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -12,27 +12,28 @@
 <style>
 :root{--bg:#ecfdf5;--panel:#fff;--ink:#0f172a;--muted:#64748b;--line:#d1fae5;--brand:#065f46;--danger:#b91c1c}
 *{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif}
-body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),radial-gradient(circle at 90% 10%,#a7f3d0 0%,transparent 30%),var(--bg);color:var(--ink)}
-.layout{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
-.sidebar{background:linear-gradient(180deg,#064e3b 0%,#022c22 100%);color:#ecfdf5;padding:24px 18px;position:sticky;top:0;height:100vh;overflow-y:auto}
+body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),radial-gradient(circle at 90% 10%,#a7f3d0 0%,transparent 30%),var(--bg);color:var(--ink);min-height:100vh;margin:0;padding:0;overflow-x:hidden;overflow-x:hidden}
+.layout{display:block;padding-left:270px;min-height:100vh;width:100%}
+.sidebar{background:linear-gradient(180deg,#064e3b 0%,#022c22 100%);color:#ecfdf5;padding:24px 18px;position:fixed;top:0;left:0;bottom:0;width:270px;overflow-y:auto;z-index:1200}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.2rem;margin-bottom:24px}
+.brand-logo{width:36px;height:36px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,0.16);padding:4px;}
 .brand i{background:rgba(255,255,255,.16);width:34px;height:34px;border-radius:10px;display:grid;place-items:center}
 .menu a{display:block;color:#d1fae5;text-decoration:none;padding:11px 12px;border-radius:10px;margin-bottom:6px}
 .menu a:hover,.menu a.active{background:rgba(255,255,255,.12);color:#fff}
-.main{padding:24px}
+.main{padding:24px;min-width:0}
 .topbar{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;box-shadow:0 8px 24px rgba(16,185,129,.08)}
 .title{font-weight:600}.subtitle{font-size:.82rem;color:var(--muted)}
 .logout{border:1px solid #bbf7d0;background:#f0fdf4;color:#065f46;border-radius:8px;padding:7px 10px;cursor:pointer}
-  .grid{display:grid;grid-template-columns:1.1fr 1.4fr .9fr;gap:12px}
-  .grid2{display:grid;grid-template-columns:1.4fr .9fr;gap:12px;margin-top:12px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 10px 24px rgba(2,44,34,.06)}
+  .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) minmax(0,.9fr);gap:12px}
+  .grid2{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.9fr);gap:12px;margin-top:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 10px 24px rgba(2,44,34,.06);min-width:0}
 .h{font-weight:600;font-size:.95rem;margin-bottom:10px}
 .input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;font-size:.9rem}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .btn{border:none;background:#065f46;color:#fff;padding:10px;border-radius:9px;cursor:pointer;font-weight:600}
 .btn.alt{background:#334155}.btn.warn{background:var(--danger)}
-  .table{width:100%;border-collapse:collapse}
-  .table th,.table td{padding:8px 4px;border-bottom:1px solid #ecfeff;font-size:.86rem;text-align:left}
+  .table{width:100%;max-width:100%;border-collapse:collapse}
+  .table th,.table td{padding:8px 4px;border-bottom:1px solid #ecfeff;font-size:.86rem;text-align:left;word-break:break-word}
   .table th.right,.table td.right{text-align:right}
 .kv{display:flex;justify-content:space-between;padding:6px 0;font-size:.9rem}
 .k{color:var(--muted)}.v{font-weight:600}.total{font-size:1.35rem;font-weight:700;color:#065f46}
@@ -40,6 +41,7 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
 .tag{font-size:.72rem;background:#dcfce7;color:#166534;border-radius:999px;padding:3px 8px}
   .print-ticket{display:none}
   .print-pos-ticket{display:none}
+  .print-cash-close-ticket{display:none}
 .print-doc{border:1px solid #1f2937;border-radius:2px;padding:0;background:#fff;color:#111827;font-family:Arial,Helvetica,sans-serif}
 .p-box{border:1px solid #1f2937}
 .p-row{display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid #cfd4dc;min-height:22px}
@@ -97,7 +99,133 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
   .camera-preview{width:100%;border-radius:12px;overflow:hidden;background:#000;margin-bottom:10px}
   .camera-preview video{width:100%;display:block}
   .camera-status{font-size:.88rem;color:#475569;margin-bottom:8px}
-@media(max-width:1200px){.grid{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto}}
+
+/* Visual refresh (POS less flat) */
+:root{
+  --brand-2:#10b981;
+  --focus:rgba(16,185,129,.22);
+  --shadow:0 18px 44px rgba(2,44,34,.12);
+  --shadow-2:0 10px 24px rgba(2,44,34,.10);
+}
+
+body{
+  background:
+    radial-gradient(900px 420px at 8% -10%, rgba(167,243,208,.55) 0%, transparent 58%),
+    radial-gradient(860px 460px at 100% 0%, rgba(94,234,212,.32) 0%, transparent 55%),
+    linear-gradient(180deg, #f6fbf9 0%, #eef6f3 60%, var(--bg) 100%);
+}
+
+.sidebar{
+  box-shadow:0 18px 60px rgba(2,44,34,.22);
+}
+
+.brand{gap:10px;}
+.brand-logo{width:32px;height:32px;border-radius:12px;padding:4px;display:block;}
+.brand-name{letter-spacing:-.2px;}
+
+.menu a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:600;
+  transition:transform .16s ease, background .18s ease, color .18s ease;
+}
+
+.menu a i{
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.10);
+}
+
+.menu a:hover{transform:translateX(2px);}
+
+.topbar{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(209,250,229,.85);
+  box-shadow:var(--shadow-2);
+  backdrop-filter:blur(6px);
+}
+
+.tag{
+  border:1px solid rgba(16,185,129,.25);
+  background:rgba(16,185,129,.10);
+}
+
+.card{
+  border-radius:16px;
+  box-shadow:var(--shadow-2);
+}
+
+.card:hover{
+  box-shadow:var(--shadow);
+}
+
+.h{font-size:.98rem;}
+
+.input{
+  background:#f8fbff;
+  border:1px solid rgba(203,213,225,.95);
+  transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.input:focus{
+  outline:none;
+  border-color:rgba(16,185,129,.85);
+  background:#ffffff;
+  box-shadow:0 0 0 4px var(--focus);
+}
+
+.btn{
+  background:linear-gradient(135deg, var(--brand-2), var(--brand));
+  box-shadow:0 12px 24px rgba(6,95,70,.18);
+  transition:transform .14s ease, filter .18s ease, box-shadow .18s ease;
+}
+
+.btn:hover{transform:translateY(-1px);filter:brightness(1.03);box-shadow:0 16px 30px rgba(6,95,70,.22);}
+.btn:active{transform:translateY(0);filter:brightness(.98);}
+
+.btn.alt{
+  background:#ffffff;
+  color:#0f172a;
+  border:1px solid rgba(203,213,225,.95);
+  box-shadow:none;
+}
+
+.btn.alt:hover{background:#f8fafc;filter:none;box-shadow:0 10px 18px rgba(2,44,34,.08);}
+
+.btn.warn{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+
+.table th{
+  background:#f6fbf9;
+  color:#475569;
+  font-size:.74rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  padding:10px 8px;
+  border-bottom:1px solid rgba(209,250,229,.85);
+}
+
+.table td{
+  padding:10px 8px;
+  border-bottom:1px solid rgba(226,232,240,.9);
+}
+
+.table tbody tr:hover{background:#f8fbff;}
+
+.totals-panel{
+  background:#f6fbf9;
+  border:1px solid rgba(209,250,229,.85);
+  border-radius:12px;
+  padding:10px 10px;
+}
+
+/* Make Cobro buttons feel like an action stack */
+.grid > article.card:nth-child(3) .btn{width:100%;}
+.grid > article.card:nth-child(3) .btn + .btn{margin-top:8px;}
+@media(max-width:1200px){.grid{grid-template-columns:1fr}.layout{padding-left:0}.sidebar{position:relative;height:auto;width:100%}}
 @media(max-width:1200px){.grid2{grid-template-columns:1fr}}
 @media print{
   @page{size:A4;margin:8mm}
@@ -127,7 +255,27 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
     left:auto !important;
     top:auto !important;
   }
-  .pos-kicker{
+  
+  body.print-cash-close-mode .print-ticket{display:none !important}
+  body.print-cash-close-mode .print-pos-ticket{display:none !important}
+  body.print-cash-close-mode .print-cash-close-ticket{
+    display:block !important;
+    position:static !important;
+    width:80mm;
+    max-width:80mm;
+    margin:0 auto;
+    padding:3.5mm 3mm;
+    background:#fff;
+    color:#111;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:14px;
+    line-height:1.35;
+    border:1px solid #111;
+    border-radius:2px;
+    transform:none !important;
+    left:auto !important;
+    top:auto !important;
+  }.pos-kicker{
     text-align:center;
     font-size:9.8px;
     font-weight:800;
@@ -211,16 +359,23 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
 .layout{grid-template-columns:1fr}
   .sidebar{display:block;position:fixed;left:0;top:0;bottom:0;width:270px;z-index:50;transform:translateX(-110%);transition:transform .2s ease;box-shadow:0 18px 60px rgba(2,44,34,.22)}
   .menu-toggle{display:inline-flex;align-items:center;justify-content:center}
-  .sidebar-overlay{display:block;position:fixed;inset:0;background:rgba(2,44,34,.35);backdrop-filter:blur(2px);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s ease}
+  .sidebar-overlay{display:block;position:fixed;inset:0;background:rgba(2,44,34,.35);-webkit-backdrop-filter:blur(2px);
+  backdrop-filter:blur(2px);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s ease}
   .layout.sidebar-open .sidebar{transform:translateX(0)}
   .layout.sidebar-open .sidebar-overlay{opacity:1;pointer-events:auto}
   .grid{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar no-print">
-    <div class="brand"><i class="bi bi-capsule-pill"></i> FarmaPOS</div>
+    <div class="brand">
+  <img src="image/Logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
+  <div class="brand-name">FarmaPOS</div>
+</div>
     <nav class="menu">
       <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
       <a href="pos.html" class="active"><i class="bi bi-cart-plus"></i> Ventas POS</a>
@@ -249,16 +404,16 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
         <div class="h">Agregar al carrito</div>
         <div class="search-box">
           <label class="subtitle" for="producto">Producto</label>
-          <input class="input" id="producto" placeholder="Buscar por nombre o código">
+          <input class="input" id="producto" placeholder="Buscar por nombre o codigo">
           <div id="suggestions" class="suggestions"></div>
         </div>
         <div class="row" style="margin-top:8px">
           <div>
-            <label class="subtitle" for="barcode">Código de barras</label>
-            <input class="input" id="barcode" placeholder="Escanear código y Enter">
+            <label class="subtitle" for="barcode">Codigo de barras</label>
+            <input class="input" id="barcode" placeholder="Escanear codigo y Enter">
           </div>
           <div style="display:flex;align-items:flex-end">
-            <button class="btn alt" type="button" style="width:100%" onclick="openScanModal()">Escanear con cámara</button>
+            <button class="btn alt" type="button" style="width:100%" onclick="openScanModal()">Escanear con camara</button>
           </div>
         </div>
         <div class="row" style="margin-top:8px">
@@ -298,7 +453,7 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
         <div class="h">Cobro</div>
         <div class="kv"><label class="k" for="cliente">Cliente</label><span class="v">
         <input id="cliente" class="input" value="MOSTRADOR"></span></div>
-        <div class="kv"><label class="k" for="metodo">Método</label><span class="v"><select id="metodo" class="input"><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option></select></span></div>
+        <div class="kv"><label class="k" for="metodo">Metodo</label><span class="v"><select id="metodo" class="input"><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option></select></span></div>
         <div class="totals-panel" style="margin:10px 0">
           <div class="row"><span class="label">Items</span><span class="val" id="totalItems">0</span></div>
           <div class="row"><span class="label">Subtotal</span><span class="val" id="subtotal">$0</span></div>
@@ -309,7 +464,7 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
           <div class="row"><span class="label">Estado</span><span class="val" id="payStatus">-</span></div>
         </div>
         <div class="kv"><label class="k" for="pago">Pago recibido</label><span class="v"><input id="pago" class="input" type="number" min="0" step="0.01" value="0" oninput="renderTotals()"></span></div>
-        <div class="kv no-print"><label class="k" for="autoPrintEnabled">Impresión automática</label><span class="v"><input id="autoPrintEnabled" type="checkbox" checked></span></div>
+        <div class="kv no-print"><label class="k" for="autoPrintEnabled">Impresion automatica</label><span class="v"><input id="autoPrintEnabled" type="checkbox" checked></span></div>
         <div class="kv no-print"><label class="k" for="autoPrintFormat">Formato auto</label><span class="v">
           <select id="autoPrintFormat" class="input" style="padding:6px 8px;max-width:160px">
             <option value="pos">Tirilla POS (Epson)</option>
@@ -342,7 +497,8 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
         <div class="kv"><span class="k">Efectivo</span><span class="v" id="ccCash">$0</span></div>
         <div class="kv"><span class="k">Tarjeta</span><span class="v" id="ccCard">$0</span></div>
         <div class="kv"><span class="k">Transferencia</span><span class="v" id="ccTransfer">$0</span></div>
-        <div class="kv"><span class="k">Efectivo contado</span><span class="v"><input id="ccCountCash" class="input" type="number" min="0" step="0.01" value="0"></span></div>
+        <div class="kv"><span class="k">Efectivo contado</span><span class="v">
+        <input id="ccCountCash" class="input" type="number" min="0" step="0.01" value="0"></span></div>
         <div class="kv"><span class="k">Tarjeta contado</span><span class="v"><input id="ccCountCard" class="input" type="number" min="0" step="0.01" value="0"></span></div>
         <div class="kv"><span class="k">Transfer contado</span><span class="v"><input id="ccCountTransfer" class="input" type="number" min="0" step="0.01" value="0"></span></div>
         <div class="kv"><span class="k">Nota</span><span class="v"><input id="ccNote" class="input" type="text" placeholder="Observacion (opcional)"></span></div>
@@ -458,6 +614,24 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
 
 <div class="pos-foot">Gracias por su compra</div>
     </section>
+    <section class="print-cash-close-ticket" id="printCashCloseTicket">
+      <div class="pos-kicker">Cierre de caja</div>
+      <div class="pos-head">
+        <div class="pos-logo" id="ccPosLogo"></div>
+        <div class="pos-title" id="ccPrintNombre">FarmaPOS</div>
+        <div class="pos-sub" id="ccPrintEmpresa">Empresa</div>
+        <div class="pos-head-meta">
+          <div id="ccPrintCajero">Cajero: -</div>
+          <div id="ccPrintFecha">Fecha: -</div>
+          <div id="ccPrintCloseId">Cierre: -</div>
+        </div>
+      </div>
+
+      <div class="pos-section">Resumen</div>
+      <div class="pos-items" id="ccPrintRows"></div>
+
+      <div class="pos-foot">Documento interno</div>
+    </section>
   </main>
 </div>
 
@@ -474,9 +648,9 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
 </div>
 <div class="modal" id="scanModal">
   <div class="modal-card">
-    <div class="modal-title">Escanear con cámara</div>
+    <div class="modal-title">Escanear con camara</div>
     <div class="camera-preview"><video id="scanVideo" playsinline></video></div>
-    <div class="camera-status" id="scanStatus">Apunta la cámara al código de barras.</div>
+    <div class="camera-status" id="scanStatus">Apunta la camara al codigo de barras.</div>
     <div class="modal-actions">
       <button class="ghost" onclick="stopScanCamera()">Cerrar</button>
       <button class="primary" onclick="startScanCamera()">Reintentar</button>
@@ -485,14 +659,15 @@ body{background:radial-gradient(circle at 20% 0%,#bbf7d0 0%,transparent 35%),rad
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzJ1B5fF46bkkXLJfgF5LAKUwE0IvtfZJ_1wEC1x2PKgp8-ENh6V-Rp4apQyMEuYvSE/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyASz5b-4Wb98N-_bKS5DP9qUUMqzFxpfnR2N8adVzD9uAdKTPY6_42o2rIuJA2efaZ/exec";
 const PRINT_PREFS_KEY = "pos_print_prefs_v1";
-const TAX_RATE = 0.19; // 19% IVA (ajusta según país)
+const TAX_RATE = 0.19; // 19% IVA (ajusta segÃºn paÃ­s)
 let catalog = [];
 let filteredCatalog = [];
 let cart = [];
 let lastSale = null;
 let lastCashCloseSummary = null;
+let cashClosePrintPayload = null;
 let printPayload = null;
 let currentPrintMode = "a4";
 let companyProfile = {
@@ -540,7 +715,7 @@ function ensureZXing(){
     const script=document.createElement("script");
     script.src="https://unpkg.com/@zxing/library@0.21.2/umd/index.min.js";
     script.onload=()=>{ zxingLib = window.ZXing; resolve(zxingLib); };
-    script.onerror=()=>reject(new Error("No se pudo cargar el lector de cÃ³digos."));
+    script.onerror=()=>reject(new Error("No se pudo cargar el lector de cÃƒÂ³digos."));
     document.head.appendChild(script);
   });
 }
@@ -577,7 +752,7 @@ function openScanModal(){
   if(!modal) return;
   modal.classList.add("active");
   const status=document.getElementById("scanStatus");
-  if(status) status.textContent="Apunta la cámara al código de barras.";
+  if(status) status.textContent="Apunta la camara al codigo de barras.";
   startScanCamera();
 }
 
@@ -589,10 +764,10 @@ async function startScanCamera(){
   }
   try{
     stopScanCamera(true);
-    if(status) status.textContent="Activando cámara...";
+    if(status) status.textContent="Activando camara...";
 
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-      if(status) status.textContent="Tu navegador no permite usar la cámara. Usa el lector de código.";
+      if(status) status.textContent="Tu navegador no permite usar la camara. Usa el lector de codigo.";
       return;
     }
 
@@ -605,7 +780,7 @@ async function startScanCamera(){
         if(result){
           handleDetectedCode(result.getText());
         }else if(status && err && !(err instanceof ZX.NotFoundException)){
-          status.textContent = "Sin lectura: mueve el código frente a la cámara.";
+          status.textContent = "Sin lectura: mueve el codigo frente a la camara.";
         }
       });
       return;
@@ -614,7 +789,7 @@ async function startScanCamera(){
     scanStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}}});
     video.srcObject = scanStream;
     await video.play();
-    if(status) status.textContent="Buscando código...";
+    if(status) status.textContent="Buscando codigo...";
 
     const detector = new BarcodeDetector({formats:["ean_13","ean_8","code_128","code_39","upc_a","upc_e","qr_code"]});
     const loop = async ()=>{
@@ -630,7 +805,7 @@ async function startScanCamera(){
     };
     scanLoopId = requestAnimationFrame(loop);
   }catch(e){
-    if(status) status.textContent = "No se pudo usar la cámara: " + (e && e.message ? e.message : "permiso denegado");
+    if(status) status.textContent = "No se pudo usar la camara: " + (e && e.message ? e.message : "permiso denegado");
   }
 }
 
@@ -638,10 +813,10 @@ function handleDetectedCode(code){
   const clean = String(code || "").trim();
   const status=document.getElementById("scanStatus");
   if(!clean){
-    if(status) status.textContent="No se leyó el código. Intenta de nuevo.";
+    if(status) status.textContent="No se leyÃ³ el codigo. Intenta de nuevo.";
     return;
   }
-  if(status) status.textContent = "Código detectado: " + clean;
+  if(status) status.textContent = "Codigo detectado: " + clean;
   const input=document.getElementById("barcode");
   if(input) input.value = clean;
   agregarPorCodigo();
@@ -812,7 +987,7 @@ function renderSuggestions(list){
   if(!list.length){ box.classList.remove("show"); return; }
   list.forEach(p=>{
     const div=document.createElement("div");
-    div.innerHTML=`<span>${p.producto||"-"}</span><span class="s-meta">${money(p.precio_venta||0)} · Stock ${Number(p.stock||0).toLocaleString("es-CO")}</span>`;
+    div.innerHTML=`<span>${p.producto||"-"}</span><span class="s-meta">${money(p.precio_venta||0)} Â· Stock ${Number(p.stock||0).toLocaleString("es-CO")}</span>`;
     div.onclick=function(){ selectSuggestion(p); };
     box.appendChild(div);
   });
@@ -1106,6 +1281,71 @@ function renderPrintPosTicket(data){
   }
 }
 
+
+function renderPrintCashCloseTicket(data){
+  const rows = document.getElementById("ccPrintRows");
+  if(!rows) return;
+  const empresaEl = document.getElementById("ccPrintEmpresa");
+  const nombreEl = document.getElementById("ccPrintNombre");
+  const fechaEl = document.getElementById("ccPrintFecha");
+  const cajeroEl = document.getElementById("ccPrintCajero");
+  const closeEl = document.getElementById("ccPrintCloseId");
+
+  const empresa = data && data.empresa ? data.empresa : getCompanyNameForPrint();
+  const nombre = data && data.nombre ? data.nombre : (companyProfile.nombre_empresa || "FarmaPOS");
+  if(empresaEl) empresaEl.textContent = empresa;
+  if(nombreEl) nombreEl.textContent = nombre;
+  if(fechaEl) fechaEl.textContent = "Fecha: " + (data.fecha || "-");
+  if(cajeroEl) cajeroEl.textContent = "Cajero: " + (data.cajero || "-");
+  if(closeEl) closeEl.textContent = "Cierre: " + (data.closeId || "-");
+
+  const exp = data.expected || {};
+  const cnt = data.counted || {};
+  const diff = data.diff || {};
+
+  const lines = [
+    ["Tickets", String(exp.tickets ?? "-")],
+    ["Total ventas", money(exp.total_sales || 0)],
+    ["Efectivo (esperado)", money(exp.cash || 0)],
+    ["Tarjeta (esperado)", money(exp.card || 0)],
+    ["Transfer (esperado)", money(exp.transfer || 0)],
+    ["Efectivo contado", money(cnt.cash || 0)],
+    ["Tarjeta contado", money(cnt.card || 0)],
+    ["Transfer contado", money(cnt.transfer || 0)],
+    ["Total contado", money(cnt.total || 0)],
+    ["Diferencia total", money(diff.total || 0)]
+  ];
+  if(data.nota){
+    lines.push(["Nota", String(data.nota)]);
+  }
+
+  rows.innerHTML = lines.map(([k,v]) => `
+    <div class="pos-item">
+      <div class="pos-item-name">${k}</div>
+      <div class="pos-item-meta"><span></span><span>${v}</span></div>
+    </div>
+  `).join("");
+
+  const logoEl = document.getElementById("ccPosLogo");
+  if(logoEl){
+    if(companyProfile.logo){
+      logoEl.innerHTML = `<img src="${companyProfile.logo}" alt="logo">`;
+      logoEl.style.display = "block";
+    }else{
+      logoEl.innerHTML = "";
+      logoEl.style.display = "none";
+    }
+  }
+}
+
+function startCashClosePrint(data){
+  cashClosePrintPayload = data || null;
+  currentPrintMode = "pos";
+  applyPrintPageMode("pos");
+  document.body.classList.remove("print-pos-mode");
+  document.body.classList.add("print-cash-close-mode");
+  setTimeout(() => window.print(), 80);
+}
 function startPrint(mode, data){
   currentPrintMode = mode === "pos" ? "pos" : "a4";
   applyPrintPageMode(currentPrintMode);
@@ -1403,6 +1643,61 @@ async function registerCashClose(){
     const diff = data.diff || {};
     closeMsg.textContent = `Cierre registrado: ${data.close_id || "-"} | Dif total: ${money(diff.total || 0)}`;
     closeMsg.style.color = "#166534";
+    // Mostrar ticket del cierre en un modal (sin afectar el resto del POS)
+    try{
+      const s = lastCashCloseSummary || {};
+      const countedCash = Number(document.getElementById("ccCountCash")?.value || 0);
+      const countedCard = Number(document.getElementById("ccCountCard")?.value || 0);
+      const countedTransfer = Number(document.getElementById("ccCountTransfer")?.value || 0);
+      const countedTotal = (isFinite(countedCash)?countedCash:0) + (isFinite(countedCard)?countedCard:0) + (isFinite(countedTransfer)?countedTransfer:0);
+      const expectedTotal = Number(s.total_sales || 0);
+      const expectedCash = Number(s.cash || 0);
+      const expectedCard = Number(s.card || 0);
+      const expectedTransfer = Number(s.transfer || 0);
+
+      const ticket = {
+        closeId: data.close_id || "-",
+        fecha: s.date || new Date().toLocaleString("es-CO"),
+        empresa: getCompanyNameForPrint(),
+        nombre: companyProfile.nombre_empresa || "FarmaPOS",
+        cajero: localStorage.getItem("usuario") || "",
+        nota: String(document.getElementById("ccNote")?.value || "").trim(),
+        expected: {
+          tickets: s.tickets || 0,
+          total_sales: expectedTotal,
+          cash: expectedCash,
+          card: expectedCard,
+          transfer: expectedTransfer
+        },
+        counted: {
+          cash: countedCash,
+          card: countedCard,
+          transfer: countedTransfer,
+          total: countedTotal
+        },
+        diff: {
+          total: countedTotal - expectedTotal
+        }
+      };
+
+      const bodyHtml = `
+        <div style="font-size:.9rem;line-height:1.35">
+          <div style="font-weight:800;color:#065f46;margin-bottom:6px">Ticket de cierre generado</div>
+          <div style="color:#475569;margin-bottom:10px">Cierre: <strong>${ticket.closeId}</strong> | ${ticket.fecha}</div>
+          <div style="border:1px solid #e2e8f0;border-radius:12px;padding:10px;background:#f8fafc">
+            <div style="display:flex;justify-content:space-between;gap:10px"><span>Total ventas</span><strong>${money(ticket.expected.total_sales)}</strong></div>
+            <div style="display:flex;justify-content:space-between;gap:10px"><span>Total contado</span><strong>${money(ticket.counted.total)}</strong></div>
+            <div style="display:flex;justify-content:space-between;gap:10px"><span>Diferencia</span><strong>${money(ticket.diff.total)}</strong></div>
+          </div>
+          <div style="margin-top:10px;color:#64748b;font-size:.86rem">Pulsa <strong>Imprimir ticket</strong> para imprimir en formato POS (80mm).</div>
+        </div>
+      `;
+
+      openModal("Cierre de caja registrado", bodyHtml, "Imprimir ticket", ()=>{
+        renderPrintCashCloseTicket(ticket);
+        startCashClosePrint(ticket);
+      });
+    }catch(_){ }
   }catch(e){
     closeMsg.textContent = "No se pudo registrar el cierre: " + (e && e.message ? e.message : "error");
     closeMsg.style.color = "#b91c1c";
@@ -1462,6 +1757,12 @@ window.addEventListener("load", async () => {
 });
 
 window.addEventListener("beforeprint", () => {
+  if(document.body.classList.contains("print-cash-close-mode") && cashClosePrintPayload){
+    currentPrintMode = "pos";
+    applyPrintPageMode("pos");
+    renderPrintCashCloseTicket(cashClosePrintPayload);
+    return;
+  }
   applyPrintPageMode(currentPrintMode);
   const data = ensureItemsForPrint(printPayload || buildPrintData());
   renderPrintTicket(data);
@@ -1470,6 +1771,8 @@ window.addEventListener("beforeprint", () => {
 
 window.addEventListener("afterprint", () => {
   document.body.classList.remove("print-pos-mode");
+  document.body.classList.remove("print-cash-close-mode");
+  cashClosePrintPayload = null;
   printPayload = null;
   currentPrintMode = "a4";
   applyPrintPageMode("a4");
@@ -1490,3 +1793,8 @@ document.querySelectorAll(".menu a").forEach(a=>a.addEventListener("click",()=>{
 </script>
 </body>
 </html>
+
+
+
+
+

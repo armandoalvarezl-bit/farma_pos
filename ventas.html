@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -14,7 +14,8 @@
 body{background:var(--bg);color:var(--ink)}
 .layout{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
 .sidebar{background:radial-gradient(circle at 22% 18%,#ffffff1c 0%,transparent 30%),linear-gradient(180deg,#064e3b 0%,#03392d 54%,#022c22 100%);color:#ecfdf5;padding:22px 16px;position:sticky;top:0;height:100vh;overflow-y:auto}
-.brand{font-weight:700;font-size:1.2rem;margin-bottom:26px;display:flex;gap:10px;align-items:center}.brand i{background:rgba(255,255,255,.16);width:34px;height:34px;border-radius:10px;display:grid;place-items:center}
+.brand{font-weight:700;font-size:1.2rem;margin-bottom:26px;display:flex;gap:10px;align-items:center}.brand-logo{width:36px;height:36px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,0.16);padding:4px;}
+.brand i{background:rgba(255,255,255,.16);width:34px;height:34px;border-radius:10px;display:grid;place-items:center}
 .menu a{display:flex;align-items:center;gap:10px;color:#d1fae5;text-decoration:none;padding:10px 12px;border-radius:11px;margin-bottom:6px;transition:background .2s,color .2s,transform .2s;font-size:.94rem}
 .menu a:hover,.menu a.active{background:rgba(255,255,255,.12);color:#fff;transform:translateX(2px)}
 .main{padding:24px}
@@ -41,7 +42,10 @@ body{background:var(--bg);color:var(--ink)}
 <body>
 <div class="layout">
 <aside class="sidebar">
-  <div class="brand"><i class="bi bi-capsule-pill"></i> FarmaPOS</div>
+  <div class="brand">
+  <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
+  <div class="brand-name">FarmaPOS</div>
+</div>
   <nav class="menu">
     <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
     <a href="ventas.html" class="active"><i class="bi bi-cart-plus"></i> Ventas</a>
@@ -78,7 +82,7 @@ body{background:var(--bg);color:var(--ink)}
 </main>
 </div>
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzJ1B5fF46bkkXLJfgF5LAKUwE0IvtfZJ_1wEC1x2PKgp8-ENh6V-Rp4apQyMEuYvSE/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyASz5b-4Wb98N-_bKS5DP9qUUMqzFxpfnR2N8adVzD9uAdKTPY6_42o2rIuJA2efaZ/exec";
 const fallback = {
   totalToday: 2485000,
   ticketsToday: 146,
@@ -146,6 +150,10 @@ document.querySelectorAll(".menu a").forEach(a=>a.addEventListener("click",()=>{
 </script>
 </body>
 </html>
+
+
+
+
 
 
 

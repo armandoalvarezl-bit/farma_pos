@@ -1,5 +1,5 @@
-
-const API_URL = "https://script.google.com/macros/s/AKfycbzJ1B5fF46bkkXLJfgF5LAKUwE0IvtfZJ_1wEC1x2PKgp8-ENh6V-Rp4apQyMEuYvSE/exec";
+﻿
+const API_URL = "https://script.google.com/macros/s/AKfycbyASz5b-4Wb98N-_bKS5DP9qUUMqzFxpfnR2N8adVzD9uAdKTPY6_42o2rIuJA2efaZ/exec";
 const fallback={summary:{totalProducts:120,criticalStock:9,expiringCount:18},rows:[{producto:"Amoxicilina 500mg",lote:"AMX-212",stock:3,stock_min:10,precio_venta:12000,vencimiento:"2026-03-20",estado:"Critico",level:"danger"},{producto:"Ibuprofeno jarabe",lote:"IBU-808",stock:10,stock_min:8,precio_venta:8500,vencimiento:"2026-03-05",estado:"Por vencer",level:"warn"},{producto:"Vitamina C",lote:"VIT-123",stock:45,stock_min:10,precio_venta:15000,vencimiento:"2026-11-22",estado:"Normal",level:"ok"}]};
 let isEditMode=false;
 let originalKey={producto:"",lote:""};
